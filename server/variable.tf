@@ -11,3 +11,9 @@ variable "public_sg_id" {}
 variable "ami" {}
 
 variable "instance_type" {}
+
+variable "ssh_key_name" {
+  description = "Name of the SSH key pair for EC2 instances"
+  type        = string
+  default     = null
+}

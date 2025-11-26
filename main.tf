@@ -17,11 +17,12 @@ module "security-group" {
 }
 
 module "database" {
-  source            = "./database"
-  prefix            = local.prefix
-  rds_sg_id         = module.security-group.rds_sg_id
-  private_subnet_id = module.vpc.private_subnet_id
-  common_tags       = local.common_tags
+  source             = "./database"
+  prefix             = local.prefix
+  rds_sg_id          = module.security-group.rds_sg_id
+  private_subnet_id  = module.vpc.private_subnet_id
+  private_subnet_ids = module.vpc.private_subnets
+  common_tags        = local.common_tags
 }
 
 module "server" {
@@ -34,16 +35,17 @@ module "server" {
   public_sg_id      = module.security-group.public_sg_id
   ami               = data.aws_ami.ubuntu.id
   instance_type     = var.instance_type
+  ssh_key_name      = var.ssh_key_name
 }
 
 module "amazon_mq" {
   source              = "./amazon-mq-module"
   name                = "feature-app-mq-prod-cluster"
-  engine_version      = "5.17.6"
-  instance_type       = "mq.m5.large"
+  engine_version      = "4.2"
+  instance_type       = "mq.m7g.large"
   engine_type         = "RabbitMQ"
   deployment_mode     = "CLUSTER_MULTI_AZ"
-  subnet_ids          = module.vpc.private_subnet_id
+  subnet_ids          = module.vpc.private_subnets
   vpc_id              = module.vpc.vpc_id
   username            = var.username
   password            = var.password
@@ -61,10 +63,10 @@ module "amazon_mq" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 21.0"
+  version = "21.9.0"
 
   name               = "neowise-app-cluster-${var.env}"
-  kubernetes_version = "1.33"
+  kubernetes_version = "1.34"
 
   endpoint_public_access                   = false
   enable_cluster_creator_admin_permissions = true
@@ -78,7 +80,7 @@ module "eks" {
       max_size     = 5
       desired_size = 3
 
-      instance_type = ["m5.xlarge"]
+      instance_types = ["m5.xlarge"]
     }
   }
 

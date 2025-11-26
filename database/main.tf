@@ -15,10 +15,10 @@ resource "aws_secretsmanager_secret_version" "rds_password" {
 resource "aws_db_instance" "postgres" {
   identifier = "${var.prefix}-postgres"
   engine = "postgres"
-  engine_version = "16.0"
+  engine_version = "18.1"
   instance_class = "db.t3.micro"
-  allocated_storage = 30 
-  username = "admin"
+  allocated_storage = 30
+  username = "dbadmin"
   password = random_password.rds_password.result
   vpc_security_group_ids = [ var.rds_sg_id ]
   db_subnet_group_name = aws_db_subnet_group.main.name
@@ -36,7 +36,7 @@ resource "aws_db_instance" "postgres" {
 
 resource "aws_db_subnet_group" "main" {
   name = "${var.prefix}-db-subnet-group"
-  subnet_ids = [ var.private_subnet_id ]
+  subnet_ids = length(var.private_subnet_ids) > 0 ? var.private_subnet_ids : [ var.private_subnet_id ]
 
   tags = merge(
     var.common_tags,

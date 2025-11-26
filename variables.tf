@@ -1,6 +1,6 @@
 variable "region" {
   type    = string
-  default = "us-east-1"
+  default = "ap-south-1"
 }
 
 variable "prefix" {
@@ -22,7 +22,7 @@ variable "vpc_cidr" {
 
 variable "subnet_cidr_list" {
   type    = list(string)
-  default = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
+  default = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 variable "instance_type" {
@@ -31,7 +31,7 @@ variable "instance_type" {
 
 variable "env" {
   type    = string
-  default = "uat"
+  default = "prod"
 }
 
 variable "username" {
@@ -41,5 +41,11 @@ variable "username" {
 
 variable "password" {
   type    = string
-  default = "admin@123"
+  default = "Admin@123456"
+}
+
+variable "ssh_key_name" {
+  description = "Name of the SSH key pair for EC2 instances (must exist in AWS)"
+  type        = string
+  default     = null
 }
