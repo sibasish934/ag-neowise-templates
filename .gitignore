@@ -5,3 +5,5 @@ terraform.tfstate
 *.tfplan.*
 README.md
 *.md
+*.py
+main.py
