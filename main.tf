@@ -40,7 +40,7 @@ module "server" {
 
 module "amazon_mq" {
   source              = "./amazon-mq-module"
-  name                = "feature-app-mq-prod-cluster"
+  name                = "neowise-app-mq-prod-cluster"
   engine_version      = "4.2"
   instance_type       = "mq.m7g.large"
   engine_type         = "RabbitMQ"

@@ -11,17 +11,17 @@ terraform {
     }
   }
 
-  backend "local" {
-    path = "./terraform.tfstate"
-  }
-
-  #  backend "s3" {
-  #   bucket         = "my-backend-devops1 -1-terraform"
-  #   key            = "tfstate/terraform.tfstate"
-  #   region         = "ap-south-1"
-  #   encrypt        = true
-  #   dynamodb_table = "terraform-lock-table"
+  # backend "s3" {
+  #  path = "./terraform.tfstate"
   # }
+
+      backend "s3" {
+      bucket         = "my-backend-devops1 -1-terraform"
+      key            = "tfstate/terraform.tfstate"
+      region         = "ap-south-1"
+      encrypt        = true
+      dynamodb_table = "terraform-lock-table"
+   }
 }
 
 provider "aws" {
